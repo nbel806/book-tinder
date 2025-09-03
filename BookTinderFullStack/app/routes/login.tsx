@@ -1,10 +1,12 @@
-import { Login } from "~/login/login";
+import { LoginCard } from "~/login/loginCard";
 import type { Route } from "./+types/login";
+import { validateLogin } from "~/login/loginHelper";
+import { useNavigate } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Login" },
+    { name: "description", content: "Login to your account" },
   ];
 }
 
@@ -13,5 +15,9 @@ export function loader({ context }: Route.LoaderArgs) {
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-  return <Login />;
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-slate-200">
+      <LoginCard />
+    </div>
+  );
 }
