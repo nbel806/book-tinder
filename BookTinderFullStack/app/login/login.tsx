@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -12,19 +11,22 @@ import {
 } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { validateLogin } from "./loginHelper";
 
 export function Login() {
+  let navigate = useNavigate();
   function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const password = (event.target as HTMLFormElement).password.value;
     const email = (event.target as HTMLFormElement).email.value;
-    const form = event.target as HTMLFormElement;
 
     //Check login info
-    //If correct then redirect to dashboard
-    //form.reset();
-
-    //If incorrect then display error
+    if (validateLogin(email, password)) {
+      console.log("Login successful");
+      navigate("/dashboard");
+    } else {
+      alert("Invalid login info");
+    }
   }
 
   return (
