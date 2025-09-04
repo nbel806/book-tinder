@@ -4,4 +4,5 @@ export type BookInfo = {
   genre: string;
   description: string;
   image: string;
+  tags: string[];
 };
