@@ -3,6 +3,7 @@ export function loadBooks() {
   //setBooks
   const books = [
     {
+      id: 1,
       title: "The Midnight Library",
       author: "Matt Haig",
       genre: "Fiction",
@@ -12,6 +13,7 @@ export function loadBooks() {
       tags: ["Fiction", "Thriller", "Mystery"],
     },
     {
+      id: 2,
       title: "Atomic Habits",
       author: "James Clear",
       genre: "Self-Help",
@@ -21,6 +23,7 @@ export function loadBooks() {
       tags: ["Self-Help", "Productivity", "Motivation"],
     },
     {
+      id: 3,
       title: "Project Hail Mary",
       author: "Andy Weir",
       genre: "Science Fiction",
@@ -30,6 +33,7 @@ export function loadBooks() {
       tags: ["Science Fiction", "Fiction", "Adventure"],
     },
     {
+      id: 4,
       title: "Circe",
       author: "Madeline Miller",
       genre: "Fantasy",
@@ -39,6 +43,7 @@ export function loadBooks() {
       tags: ["Fantasy", "Fiction", "Magic"],
     },
     {
+      id: 5,
       title: "Educated",
       author: "Tara Westover",
       genre: "Memoir",
@@ -50,3 +55,7 @@ export function loadBooks() {
   ];
   return books;
 }
+
+export function updateLiked(bookId: number) {}
+
+export function updateDisliked(bookId: number) {}

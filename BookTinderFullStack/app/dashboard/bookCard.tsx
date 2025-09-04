@@ -13,7 +13,6 @@ export default function BookCard(bookInfo: BookInfo) {
             className="w-50 object-cover rounded-lg shadow-md"
           />
         </div>
-
         {/* Book Details */}
         <div className="flex flex-col justify-between text-left">
           <div>
