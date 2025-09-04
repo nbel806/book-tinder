@@ -30,7 +30,7 @@ export function LoginCard() {
     }
   }
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full max-w-sm bg-slate-50">
       <CardHeader>
         <CardTitle>Login to your account</CardTitle>
         <CardDescription>
