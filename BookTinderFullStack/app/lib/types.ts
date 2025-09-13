@@ -7,3 +7,12 @@ export type BookInfo = {
   image: string;
   tags: string[];
 };
+
+export type UserInfo = {
+  id: number;
+  name: string;
+  email: string;
+  image: string;
+  likedBooks: number[];
+  dislikedBooks: number[];
+};
