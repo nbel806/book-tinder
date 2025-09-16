@@ -1,7 +1,5 @@
 import { LoginCard } from "~/login/loginCard";
 import type { Route } from "./+types/login";
-import { validateLogin } from "~/login/loginHelper";
-import { useNavigate } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [

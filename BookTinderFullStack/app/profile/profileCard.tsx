@@ -10,6 +10,7 @@ import { getUserInfo } from "./profileHelper";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { useEffect, useState } from "react";
+import { Link } from "react-router";
 
 export default function ProfileCard() {
   const [userinfo, setUserinfo] = useState<UserInfo>({
@@ -43,7 +44,9 @@ export default function ProfileCard() {
         </Avatar>
       </div>
       <CardFooter>
-        <Button>Log Out</Button>
+        <Link to="/">
+          <Button>Log Out</Button>
+        </Link>
       </CardFooter>
     </Card>
   );
