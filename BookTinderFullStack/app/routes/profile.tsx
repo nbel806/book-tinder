@@ -4,8 +4,8 @@ import ProfileCard from "~/profile/profileCard";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Book Tinder" },
-    { name: "description", content: "Welcome to Book Tinder!" },
+    { title: "Profile" },
+    { name: "description", content: "Welcome to your profile" },
   ];
 }
 

@@ -22,7 +22,7 @@ export default function ProfileCard() {
   });
   useEffect(() => {
     setUserinfo(getUserInfo());
-  });
+  }, []);
   return (
     <Card className="w-full max-w-sm bg-slate-50">
       <div className="flex flex-row justify-between pr-4">
