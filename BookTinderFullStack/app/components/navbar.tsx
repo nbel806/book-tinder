@@ -11,7 +11,7 @@ export default function NavBar() {
 
   const navItems = [
     { to: "/dashboard", label: "Home" },
-    { to: "/books", label: "Past Books" },
+    { to: "/books", label: "Liked Books" },
     { to: "/profile", label: "Profile" },
   ];
 
