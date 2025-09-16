@@ -3,8 +3,8 @@ import type { BookInfo } from "~/lib/types";
 
 export default function BookCard(bookInfo: BookInfo) {
   return (
-    <Card className="max-w-2xl mx-auto  rounded-2xl border border-gray-200 bg-slate-100 backdrop-blur-sm">
-      <CardContent className="flex gap-6 p-6">
+    <Card className="max-w-2xl mx-auto p-2 rounded-2xl border border-gray-200 bg-slate-100 backdrop-blur-sm shadow-md hover:bg-slate-200">
+      <CardContent className="flex gap-6 p-2">
         {/* Book Cover */}
         <div className="flex-shrink-0">
           <img
