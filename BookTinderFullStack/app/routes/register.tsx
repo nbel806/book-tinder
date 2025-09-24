@@ -10,7 +10,7 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-pink-100 via-slate-300 to-blue-100">
+    <div className="flex min-h-screen items-center justify-center">
       <RegisterCard />
     </div>
   );

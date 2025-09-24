@@ -11,7 +11,7 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-pink-100 via-slate-300 to-blue-100">
+    <div className="flex flex-col min-h-screen">
       <NavBar />
       <div className="min-h-screen flex items-center justify-center">
         <LikedBooksGrid />
