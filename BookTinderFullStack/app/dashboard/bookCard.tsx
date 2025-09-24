@@ -15,7 +15,7 @@ export default function BookCard({
   handleDisliked,
 }: BookCardProps) {
   return (
-    <Card className="max-w-4xl p-2 rounded-2xl shadow-md">
+    <Card className="max-w-4xl p-8 rounded-2xl shadow-md">
       <CardContent className="flex gap-6 p-2">
         {/* Book Cover */}
         <div className="flex-shrink-0">
