@@ -31,7 +31,7 @@ export default function NavBar() {
                   className={`px-4 py-2 rounded-xl text-lg font-medium transition-colors duration-200 
                   ${
                     location.pathname === item.to
-                      ? "border-2 border-pink-200 text-slate-800 hover:bg-slate-100"
+                      ? "border-b-2 border-pink-200 text-slate-800 bg-slate-200 hover:bg-slate-200"
                       : "text-slate-800 hover:bg-slate-200"
                   }`}
                 >
