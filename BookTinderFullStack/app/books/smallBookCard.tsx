@@ -1,3 +1,5 @@
+import { Trash } from "lucide-react";
+import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -9,7 +11,7 @@ import type { BookInfo } from "~/lib/types";
 
 export default function SmallBookCard(bookInfo: BookInfo) {
   return (
-    <Card className="w-full max-w-sm bg-slate-50 flex flex-row p-2">
+    <Card className="w-full max-w-sm bg-slate-50 flex flex-row p-4">
       <div className="flex-shrink-0">
         <img
           src={bookInfo.image || "~/../public/testCover.webp"}
@@ -17,17 +19,22 @@ export default function SmallBookCard(bookInfo: BookInfo) {
           className="w-20 object-cover rounded-lg shadow-md"
         />
       </div>
-      <div className="flex flex-col justify-between text-left">
+      <div className="flex flex-col justify-between text-left w-full">
         <div>
           <CardTitle>{bookInfo.title}</CardTitle>
           <CardDescription>{bookInfo.author}</CardDescription>
-          <CardDescription className="text-pink-500">
-            {bookInfo.genre}
+          <CardDescription>
+            <Badge
+              className="mt-2 border-gray-200 bg-slate-50"
+              variant={"secondary"}
+            >
+              {bookInfo.genre}
+            </Badge>
           </CardDescription>
         </div>
-        <CardAction>
-          <Button className="w-full shadow-md bg-pink-100 hover:bg-pink-200 text-black transition-all">
-            Remove
+        <CardAction className="w-full flex">
+          <Button className="shadow-sm bg-pink-100 hover:bg-pink-200 text-black transition-all ml-auto mr-0">
+            <Trash />
           </Button>
         </CardAction>
       </div>

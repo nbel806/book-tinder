@@ -13,7 +13,10 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar />
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex-row items-center justify-center">
+        <h1 className="text-4xl font-bold text-gray-800 my-8 text-center">
+          Books you matched with
+        </h1>
         <LikedBooksGrid />
       </div>
     </div>
