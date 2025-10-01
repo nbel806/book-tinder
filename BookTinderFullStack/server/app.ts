@@ -11,7 +11,7 @@ declare module "react-router" {
 
 export const app = express();
 
-app.get("/api", routes);
+app.use("/api", routes);
 
 app.use(
   createRequestHandler({

@@ -4,7 +4,10 @@ import userRoutes from "./users.routes";
 
 const router = Router();
 
-router.get("/book", bookRoutes);
-router.get("/api", userRoutes);
+router.use("/books", bookRoutes);
+router.use("/users", userRoutes);
+router.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 
 export default router;

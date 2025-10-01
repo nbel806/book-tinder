@@ -24,3 +24,8 @@ user_id INT NOT NULL,
 book_id INT NOT NULL,
 PRIMARY KEY(user_id, book_id)
 );
+
+
+SELECT * FROM users;
+
+INSERT INTO users (user_name, email, user_password) VALUES ("Nathan", "nathan@gmail.com","password"),("Jodie Batt", "jodie@gmail.com", "password");

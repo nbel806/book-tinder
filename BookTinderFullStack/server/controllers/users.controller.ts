@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { UsersService } from "../services/users.service";
+import { UsersService } from "../services/users.services";
 
 const usersService = new UsersService();
 
@@ -12,19 +12,19 @@ export class UsersController {
 
   static async createUser(req: Request, res: Response) {
     const { name, email, password } = req.body;
-    const user = await usersService.createUser(name, email, password);
-    res.status(201).json(user);
+    // const user = await usersService.createUser(name, email, password);
+    // res.status(201).json(user);
   }
 
   static async getUserLiked(req: Request, res: Response) {
     const { id } = req.params;
-    const likedBooks = await usersService.getUserLiked(Number.parseInt(id));
-    res.status(200).json(likedBooks);
+    // const likedBooks = await usersService.getUserLiked(Number.parseInt(id));
+    // res.status(200).json(likedBooks);
   }
 
   static async getUserSeen(req: Request, res: Response) {
     const { id } = req.params;
-    const seenBooks = await usersService.getUserSeen(Number.parseInt(id));
-    res.status(200).json(seenBooks);
+    // const seenBooks = await usersService.getUserSeen(Number.parseInt(id));
+    // res.status(200).json(seenBooks);
   }
 }
