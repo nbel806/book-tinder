@@ -1,9 +1,8 @@
 import { Router } from "express";
+import BookController from "../controllers/book.controller";
 
 const router = Router();
 
-router.get("/", async (req, res) => {
-  res.json("Books");
-});
+router.get("/:id", BookController.getBook);
 
 export default router;

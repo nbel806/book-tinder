@@ -1,14 +1,13 @@
 import { Router } from "express";
+import UsersController from "../controllers/users.controller";
 
 const router = Router();
 
-router.get("/", async (req, res) => {
-  res.json("Users");
-});
+router.post("/", UsersController.createUser);
 
-router.post("/", async (req, res) => {
-  const { name, email } = req.body;
-  res.json("Done");
-});
+router.get("/:id", UsersController.getUser);
+
+router.get("/:id/liked", UsersController.getUserLiked);
+router.get("/:id/seen", UsersController.getUserSeen);
 
 export default router;
