@@ -1,12 +1,13 @@
 import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import pool from "./database";
 import { BooksService } from "./books.services";
+import type { Book, User } from "server/types/types";
 
 interface UserRow extends RowDataPacket {
-  id: number;
-  user_name: string;
-  email: string;
-  user_password: string;
+  user: User;
+}
+interface BookRow extends RowDataPacket {
+  book: Book;
 }
 
 export class UsersService {
@@ -32,7 +33,7 @@ export class UsersService {
   }
 
   async getUserLiked(id: number) {
-    const [rows] = await pool.query(
+    const [rows] = await pool.query<BookRow[]>(
       `SELECT * FROM user_liked_book WHERE user_id = ?`,
       [id]
     );
@@ -40,24 +41,22 @@ export class UsersService {
   }
 
   async getUserSeen(id: number) {
-    const [rows] = await pool.query(
+    const [rows] = await pool.query<BookRow[]>(
       `SELECT * FROM user_seen_book WHERE user_id = ?`,
       [id]
     );
     return rows;
   }
 
-  async getUserRecomendation(id: number, numberOfRecomendations: number) {
-    //Implement logic to return books that are not liked by the user but user might like
-    //Start with random book user hasnt read.
+  async getUserRecommendation(id: number, numberOfRecommendations: number) {
     const bookService = new BooksService();
     const readBooks = await this.getUserSeen(id);
-    const allBooks = await bookService.getAllBooks();
+    const allBooks: BookRow[] = await bookService.getAllBooks();
 
     const notReadBooks = allBooks.filter((book) => {
       return !readBooks.some((readBook) => readBook.id === book.id);
     });
 
-    return notReadBooks.slice(0, numberOfRecomendations);
+    return notReadBooks.slice(0, numberOfRecommendations);
   }
 }
