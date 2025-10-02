@@ -9,6 +9,7 @@ CREATE TABLE books (
 id INT PRIMARY KEY AUTO_INCREMENT,
 title TEXT,
 author TEXT,
+genres TEXT,
 description TEXT,
 image TEXT
 );

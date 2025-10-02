@@ -6,8 +6,5 @@ const router = Router();
 
 router.use("/books", bookRoutes);
 router.use("/users", userRoutes);
-router.get("/", (req, res) => {
-  res.send("Hello World!");
-});
 
 export default router;
