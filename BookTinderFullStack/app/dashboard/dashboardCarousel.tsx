@@ -8,8 +8,6 @@ import BookCard from "./bookCard";
 import { useEffect, useState, useCallback, useRef } from "react";
 import type { BookInfo } from "~/lib/types";
 import { loadBooks, updateDisliked, updateLiked } from "./dashboardHelper";
-import { Button } from "~/components/ui/button";
-import { Check, X } from "lucide-react";
 
 export default function DashboardCarousel() {
   const [books, setBooks] = useState<BookInfo[]>([]);
@@ -66,25 +64,16 @@ export default function DashboardCarousel() {
         <CarouselContent>
           {books.map((book, i) => (
             <CarouselItem key={i}>
-              <BookCard {...book} />
+              <BookCard
+                bookInfo={book}
+                handleLiked={handleLiked}
+                handleDisliked={handleDisliked}
+              />
             </CarouselItem>
           ))}
         </CarouselContent>
       </Carousel>
-      <div className="flex gap-6 mt-2">
-        <Button
-          onClick={handleDisliked}
-          className="size-16 bg-blue-100 hover:bg-blue-200 text-slate-800 p-2 rounded-full shadow-lg transition transform hover:scale-105"
-        >
-          <X />
-        </Button>
-        <Button
-          className="size-16 bg-pink-100 hover:bg-pink-200 text-slate-800 p-2 rounded-full shadow-lg transition transform hover:scale-105"
-          onClick={handleLiked}
-        >
-          <Check />
-        </Button>
-      </div>
+      <div className="flex gap-6 mt-2"></div>
     </div>
   );
 }
