@@ -2,6 +2,7 @@ import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import pool from "./database";
 import { BooksService } from "./books.services";
 import type { Book, User } from "server/types/types";
+import bcrypt from "bcryptjs";
 
 interface UserRow extends RowDataPacket {
   user: User;
@@ -32,7 +33,8 @@ export class UsersService {
         [email]
       );
       if (await verfiyPassword(rows[0].user_password, password)) {
-        return rows;
+        const user = await this.getUserByEmail(email);
+        return user;
       } else {
         throw new Error("Invalid login info");
       }
@@ -47,7 +49,7 @@ export class UsersService {
       `SELECT * FROM users WHERE id = ?`,
       [id]
     );
-    return rows;
+    return rows[0];
   }
 
   async getUserByEmail(email: string) {
@@ -55,7 +57,7 @@ export class UsersService {
       `SELECT * FROM users WHERE email = ?`,
       [email]
     );
-    return rows;
+    return rows[0];
   }
 
   async getUserLiked(id: number) {
@@ -87,14 +89,12 @@ export class UsersService {
   }
 }
 async function verfiyPassword(user_password: string, password: string) {
-  const bycrypt = require("bcrypt");
-  const isMatch = await bycrypt.compare(password, user_password);
+  const isMatch = await bcrypt.compare(password, user_password);
   return isMatch;
 }
 
 async function hashPassword(password: string) {
-  const bycrypt = require("bcrypt");
   const saltRounds = 10;
-  const hashedPassword = await bycrypt.hash(password, saltRounds);
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
   return hashedPassword;
 }

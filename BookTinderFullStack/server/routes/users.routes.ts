@@ -15,6 +15,8 @@ router.get(
   UsersController.getUserRecommended
 );
 
+router.post("/verify", UsersController.verifyJWT);
+
 router.post("/login", UsersController.loginUser);
 
 export default router;

@@ -1,19 +1,25 @@
 import type { Request, Response } from "express";
 import { UsersService } from "../services/users.services";
+import { signJwt, verifyJwt } from "server/services/jwt";
 
 const usersService = new UsersService();
 
 export class UsersController {
   static async getUser(req: Request, res: Response) {
     const { id } = req.params;
-    const user = await usersService.getUser(Number.parseInt(id));
-    res.status(200).json(user);
+    try {
+      const user = await usersService.getUser(Number.parseInt(id));
+      const token = signJwt(user[0].email);
+      res.status(200).json({ user, token });
+    } catch (error) {
+      res.status(404).json({ message: "User not found" });
+    }
   }
 
   static async createUser(req: Request, res: Response) {
     const { name, email, password } = req.body;
     const existingUser = await usersService.getUserByEmail(email);
-    if (existingUser) {
+    if (existingUser && existingUser.length > 0) {
       return res.status(400).json({ message: "User already exists" });
     }
     const user = await usersService.createUser(name, email, password);
@@ -46,13 +52,29 @@ export class UsersController {
     let user;
     try {
       user = await usersService.loginUser(email, password);
-      if (user.length > 0) {
-        res.status(200).json(user);
+      if (user) {
+        const token = signJwt(email);
+        res.status(200).json({ user, token });
       } else {
         res.status(401).json({ message: "Invalid login info" });
       }
     } catch (error) {
       res.status(401).json({ message: "Invalid login info" });
+    }
+  }
+
+  static async verifyJWT(req: Request, res: Response) {
+    try {
+      const token = req.headers["jwt-token"];
+      if (token && typeof token === "string") {
+        if (verifyJwt(token)) {
+          res.status(200).json({ message: "Valid token" });
+        }
+      } else {
+        res.status(401).json({ message: "Invalid token" });
+      }
+    } catch (error) {
+      res.status(401).json({ message: "Invalid token" });
     }
   }
 }
