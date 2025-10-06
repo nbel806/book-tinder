@@ -36,4 +36,19 @@ export class UsersController {
     );
     res.status(200).json(recommendedBooks);
   }
+
+  static async loginUser(req: Request, res: Response) {
+    const { email, password } = req.body;
+    let user;
+    try {
+      user = await usersService.loginUser(email, password);
+      if (user.length > 0) {
+        res.status(200).json(user);
+      } else {
+        res.status(401).json({ message: "Invalid login info" });
+      }
+    } catch (error) {
+      res.status(401).json({ message: "Invalid login info" });
+    }
+  }
 }

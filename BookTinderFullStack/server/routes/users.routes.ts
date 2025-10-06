@@ -15,4 +15,6 @@ router.get(
   UsersController.getUserRecommended
 );
 
+router.post("/login", UsersController.loginUser);
+
 export default router;

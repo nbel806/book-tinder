@@ -24,6 +24,19 @@ export class UsersService {
     }
   }
 
+  async loginUser(email: string, password: string) {
+    try {
+      const [rows] = await pool.query<UserRow[]>(
+        `SELECT * FROM users WHERE email = ? AND user_password = ?`,
+        [email, password]
+      );
+      return rows;
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      throw error;
+    }
+  }
+
   async getUser(id: number) {
     const [rows] = await pool.query<UserRow[]>(
       `SELECT * FROM users WHERE id = ?`,

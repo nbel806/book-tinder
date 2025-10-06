@@ -1,9 +1,17 @@
-export function validateLogin(email: string, password: string) {
+export async function validateLogin(email: string, password: string) {
   {
-    if (email.match("nathan@gmail.com")) {
-      return password.match("password");
+    const response = await fetch("/api/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (response.ok) {
+      return true;
+    } else {
+      return false;
     }
-    return false;
   }
-  //add db connection
 }

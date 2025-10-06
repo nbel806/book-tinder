@@ -1,4 +1,3 @@
-import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
 import {
@@ -16,13 +15,13 @@ import { validateLogin } from "./loginHelper";
 
 export function LoginCard() {
   let navigate = useNavigate();
-  function handleLogin(event: React.FormEvent<HTMLFormElement>) {
+  async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const password = (event.target as HTMLFormElement).password.value;
     const email = (event.target as HTMLFormElement).email.value;
 
     //Check login info
-    if (validateLogin(email, password)) {
+    if (await validateLogin(email, password)) {
       console.log("Login successful");
       navigate("/dashboard");
     } else {
