@@ -13,9 +13,10 @@ interface BookRow extends RowDataPacket {
 export class UsersService {
   async createUser(name: string, email: string, password: string) {
     try {
+      const hashedPassword = await hashPassword(password);
       const [result] = await pool.query<ResultSetHeader>(
         `INSERT INTO users (user_name, email, user_password) VALUES (?, ?, ?)`,
-        [name, email, password]
+        [name, email, hashedPassword]
       );
       return result.insertId;
     } catch (error) {
@@ -27,10 +28,14 @@ export class UsersService {
   async loginUser(email: string, password: string) {
     try {
       const [rows] = await pool.query<UserRow[]>(
-        `SELECT * FROM users WHERE email = ? AND user_password = ?`,
-        [email, password]
+        `SELECT user_password FROM users WHERE email = ?`,
+        [email]
       );
-      return rows;
+      if (await verfiyPassword(rows[0].user_password, password)) {
+        return rows;
+      } else {
+        throw new Error("Invalid login info");
+      }
     } catch (error) {
       console.error("Error fetching user:", error);
       throw error;
@@ -41,6 +46,14 @@ export class UsersService {
     const [rows] = await pool.query<UserRow[]>(
       `SELECT * FROM users WHERE id = ?`,
       [id]
+    );
+    return rows;
+  }
+
+  async getUserByEmail(email: string) {
+    const [rows] = await pool.query<UserRow[]>(
+      `SELECT * FROM users WHERE email = ?`,
+      [email]
     );
     return rows;
   }
@@ -72,4 +85,16 @@ export class UsersService {
 
     return notReadBooks.slice(0, numberOfRecommendations);
   }
+}
+async function verfiyPassword(user_password: string, password: string) {
+  const bycrypt = require("bcrypt");
+  const isMatch = await bycrypt.compare(password, user_password);
+  return isMatch;
+}
+
+async function hashPassword(password: string) {
+  const bycrypt = require("bcrypt");
+  const saltRounds = 10;
+  const hashedPassword = await bycrypt.hash(password, saltRounds);
+  return hashedPassword;
 }
