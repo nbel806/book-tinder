@@ -23,6 +23,7 @@ export function LoginCard() {
     //Check login info
     if (await validateLogin(email, password)) {
       console.log("Login successful");
+      //set user
       navigate("/dashboard");
     } else {
       alert("Invalid login info");
