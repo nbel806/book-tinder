@@ -11,23 +11,32 @@ import {
 } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import registerUser from "./registerHelper";
+import { registerUser } from "../store/authActions";
+import { useAppDispatch } from "~/store/hooks";
 
 export function RegisterCard() {
   let navigate = useNavigate();
+  const dispatch = useAppDispatch();
   function handleRegister(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const password = (event.target as HTMLFormElement).password.value;
     const confirmPassword = (event.target as HTMLFormElement).confirmpassword
       .value;
     const email = (event.target as HTMLFormElement).email.value;
+    const name = (event.target as HTMLFormElement).usersName.value;
 
-    if (registerUser(email, password, confirmPassword)) {
-      console.log("Registration successful");
-      navigate("/login");
-    } else {
+    if (password !== confirmPassword) {
       alert("Passwords do not match");
+      return;
     }
+
+    dispatch(registerUser({ name, email, password })).then((result) => {
+      if (result.type === "auth/register/fulfilled") {
+        navigate("/login");
+      } else {
+        alert("Registration failed");
+      }
+    });
   }
   return (
     <Card className="w-full max-w-sm bg-slate-50">
@@ -45,6 +54,15 @@ export function RegisterCard() {
       <CardContent>
         <form onSubmit={handleRegister} id="signup-form">
           <div className="flex flex-col gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="usersName">Name</Label>
+              <Input
+                id="usersName"
+                type="text"
+                placeholder="John Doe"
+                required
+              />
+            </div>
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input

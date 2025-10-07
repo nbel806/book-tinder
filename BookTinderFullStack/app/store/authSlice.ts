@@ -1,43 +1,58 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { loginUser, registerUser } from "./authActions";
+import type { User } from "server/types/types";
+
+export interface IReduxStore {
+  user: User | null;
+  token: string | null;
+  isLoading: boolean;
+  isAuthenticated: boolean;
+}
 
 const initialState = {
   user: null,
   token: null,
   isAuthenticated: false,
   isLoading: false,
-  error: null,
-};
+} as IReduxStore;
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    loginStart: (state) => {
-      state.isLoading = true;
-      state.error = null;
-    },
-    loginSuccess: (state, action) => {
-      state.isLoading = false;
-      state.user = action.payload.user;
-      state.token = action.payload.token;
-      state.isAuthenticated = true;
-    },
-    loginFailure: (state, action) => {
-      state.isLoading = false;
-      state.isAuthenticated = false;
-      state.user = null;
-      state.token = null;
-      state.error = action.payload;
-    },
-    logout: (state) => {
-      state.user = null;
-      state.token = null;
-      state.isAuthenticated = false;
-      state.error = null;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(registerUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(registerUser.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.user = payload.user;
+        state.token = payload.token;
+        state.isAuthenticated = true;
+      })
+      .addCase(registerUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.isAuthenticated = false;
+        state.user = null;
+        state.token = null;
+      })
+      .addCase(loginUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(loginUser.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.user = payload.user;
+        state.token = payload.token;
+        state.isAuthenticated = true;
+      })
+      .addCase(loginUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.isAuthenticated = false;
+        state.user = null;
+        state.token = null;
+      });
   },
 });
 
-export const { loginStart, loginSuccess, loginFailure, logout } =
-  authSlice.actions;
 export default authSlice.reducer;
