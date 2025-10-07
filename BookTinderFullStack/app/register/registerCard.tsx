@@ -32,7 +32,7 @@ export function RegisterCard() {
 
     dispatch(registerUser({ name, email, password })).then((result) => {
       if (result.type === "auth/register/fulfilled") {
-        navigate("/login");
+        navigate("/dashboard");
       } else {
         alert("Registration failed");
       }
