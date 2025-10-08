@@ -8,10 +8,26 @@ export interface IReduxStore {
   isLoading: boolean;
   isAuthenticated: boolean;
 }
+async function getUserFromLocalStorage() {
+  const userID = localStorage.getItem("userID");
+  if (userID) {
+    try {
+      const response = await fetch("/api/users/" + userID, {
+        method: "GET",
+      });
+      return response.json();
+    } catch (error: any) {
+      console.log(error);
+      return null;
+    }
+  } else {
+    return null;
+  }
+}
 
 const initialState = {
-  user: null,
-  token: null,
+  user: await getUserFromLocalStorage(),
+  token: localStorage.getItem("token") || null,
   isAuthenticated: false,
   isLoading: false,
 } as IReduxStore;

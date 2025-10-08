@@ -9,8 +9,7 @@ export class UsersController {
     const { id } = req.params;
     try {
       const user = await usersService.getUser(Number.parseInt(id));
-      const token = signJwt(user[0].email);
-      res.status(200).json({ user, token });
+      res.status(200).json({ user });
     } catch (error) {
       res.status(404).json({ message: "User not found" });
     }
