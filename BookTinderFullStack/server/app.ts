@@ -2,6 +2,7 @@ import "react-router";
 import { createRequestHandler } from "@react-router/express";
 import express from "express";
 import routes from "./routes/routes";
+import cookieParser from "cookie-parser";
 
 declare module "react-router" {
   interface AppLoadContext {
@@ -11,6 +12,7 @@ declare module "react-router" {
 
 export const app = express();
 app.use(express.json());
+app.use(cookieParser());
 app.use("/api", routes);
 
 app.use(

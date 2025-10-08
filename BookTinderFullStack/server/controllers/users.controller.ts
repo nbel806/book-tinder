@@ -53,7 +53,11 @@ export class UsersController {
       user = await usersService.loginUser(email, password);
       if (user) {
         const token = signJwt(email);
-        res.status(200).json({ user, token });
+        res.cookie("jwt", token, {
+          httpOnly: true,
+          maxAge: 1000 * 60 * 60 * 24,
+        });
+        res.status(200).json({ user });
       } else {
         res.status(401).json({ message: "Invalid login info" });
       }
@@ -64,7 +68,7 @@ export class UsersController {
 
   static async verifyJWT(req: Request, res: Response) {
     try {
-      const token = req.headers["jwt-token"];
+      const token = req.cookies["jwt"];
       if (token && typeof token === "string") {
         if (verifyJwt(token)) {
           res.status(200).json({ message: "Valid token" });
@@ -73,6 +77,7 @@ export class UsersController {
         res.status(401).json({ message: "Invalid token" });
       }
     } catch (error) {
+      console.log(error);
       res.status(401).json({ message: "Invalid token" });
     }
   }
