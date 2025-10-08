@@ -1,11 +1,8 @@
-async function verifyToken(token: string) {
+export async function verifyToken() {
   try {
-    const res = await fetch("/api/users/verify", {
+    const res = await fetch("http://localhost:3000/api/users/verify", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "jwt-token": token,
-      },
+      credentials: "include",
     });
     if (res.status === 200) {
       return true;
@@ -13,6 +10,7 @@ async function verifyToken(token: string) {
       return false;
     }
   } catch (error) {
+    console.log(error);
     return false;
   }
 }

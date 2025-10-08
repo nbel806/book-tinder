@@ -67,6 +67,7 @@ export class UsersController {
   }
 
   static async verifyJWT(req: Request, res: Response) {
+    console.log(req.cookies);
     try {
       const token = req.cookies["jwt"];
       if (token && typeof token === "string") {

@@ -10,13 +10,6 @@ export function meta({}: Route.MetaArgs) {
     { name: "description", content: "Welcome to seen books" },
   ];
 }
-export async function loader({ request }: Route.LoaderArgs) {
-  const user = useAppSelector((state) => state.user);
-
-  if (!user) {
-    throw redirect("/login");
-  }
-}
 
 export default function Home() {
   return (

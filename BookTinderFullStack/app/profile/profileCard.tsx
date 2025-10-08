@@ -15,7 +15,7 @@ import { useAppSelector } from "~/store/hooks";
 import type { User } from "server/types/types";
 
 export default function ProfileCard() {
-  const selector = useAppSelector((state) => state);
+  const user = useAppSelector((state) => state.user);
   const [userinfo, setUserinfo] = useState<User>({
     id: 0,
     user_name: "temp",
@@ -23,7 +23,7 @@ export default function ProfileCard() {
     user_password: "temp",
   });
   useEffect(() => {
-    selector.user && setUserinfo(selector.user);
+    user && setUserinfo(user);
   }, []);
   return (
     <Card className="w-full max-w-sm bg-slate-50">
