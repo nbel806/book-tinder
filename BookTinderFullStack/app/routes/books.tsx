@@ -11,14 +11,9 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 export async function loader({ request }: Route.LoaderArgs) {
-  const token = useAppSelector((state) => state.token);
+  const user = useAppSelector((state) => state.user);
 
-  if (!token) {
-    throw redirect("/login");
-  }
-  if (await verifyToken(token)) {
-    return { token };
-  } else {
+  if (!user) {
     throw redirect("/login");
   }
 }
