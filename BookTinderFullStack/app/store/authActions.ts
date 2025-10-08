@@ -3,7 +3,6 @@ import type { User } from "server/types/types";
 
 interface registerReturn {
   user: User;
-  token: string;
 }
 export const registerUser = createAsyncThunk<
   registerReturn,
