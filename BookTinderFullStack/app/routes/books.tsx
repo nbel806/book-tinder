@@ -1,6 +1,8 @@
 import NavBar from "~/components/navbar";
 import type { Route } from "./+types/home";
 import LikedBooksGrid from "~/books/likedBooksGrid";
+import { useAppSelector } from "~/store/hooks";
+import { redirect } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [

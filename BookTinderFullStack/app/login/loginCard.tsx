@@ -1,4 +1,3 @@
-import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
 import {
@@ -12,22 +11,25 @@ import {
 } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { validateLogin } from "./loginHelper";
+import { loginUser } from "~/store/authActions";
+import { useAppDispatch, useAppSelector } from "~/store/hooks";
 
 export function LoginCard() {
   let navigate = useNavigate();
-  function handleLogin(event: React.FormEvent<HTMLFormElement>) {
+  const dispatch = useAppDispatch();
+  async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const password = (event.target as HTMLFormElement).password.value;
     const email = (event.target as HTMLFormElement).email.value;
 
     //Check login info
-    if (validateLogin(email, password)) {
-      console.log("Login successful");
-      navigate("/dashboard");
-    } else {
-      alert("Invalid login info");
-    }
+    dispatch(loginUser({ email, password })).then((result) => {
+      if (result.type === "auth/login/fulfilled") {
+        navigate("/dashboard");
+      } else {
+        alert("Invalid login info");
+      }
+    });
   }
   return (
     <Card className="w-full max-w-sm bg-slate-50">

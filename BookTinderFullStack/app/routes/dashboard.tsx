@@ -1,6 +1,8 @@
 import DashboardCarousel from "~/dashboard/dashboardCarousel";
 import type { Route } from "./+types/home";
 import NavBar from "~/components/navbar";
+import { redirect } from "react-router";
+import { verifyToken } from "~/store/middleware";
 
 export function meta({}: Route.MetaArgs) {
   return [
