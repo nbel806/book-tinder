@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, registerUser } from "./authActions";
+import { loginUser, logoutUser, registerUser } from "./authActions";
 import type { User } from "server/types/types";
 
 export interface IReduxStore {
@@ -45,8 +45,12 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isAuthenticated = false;
         state.user = null;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.isLoading = false;
+        state.user = null;
+        state.isAuthenticated = false;
       });
   },
 });
-
 export default authSlice.reducer;

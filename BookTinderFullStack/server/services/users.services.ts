@@ -78,14 +78,54 @@ export class UsersService {
 
   async getUserRecommendation(id: number, numberOfRecommendations: number) {
     const bookService = new BooksService();
-    const readBooks = await this.getUserSeen(id);
+    const seenBooks = await this.getUserSeen(id);
     const allBooks: BookRow[] = await bookService.getAllBooks();
 
     const notReadBooks = allBooks.filter((book) => {
-      return !readBooks.some((readBook) => readBook.id === book.id);
+      return !seenBooks.some((seenBook) => seenBook.book_id === book.id);
     });
 
     return notReadBooks.slice(0, numberOfRecommendations);
+  }
+
+  async updateUserBookLiked(id: string, bookId: string, bookLiked: boolean) {
+    try {
+      if (bookLiked) {
+        await pool.query<BookRow[]>(
+          `INSERT INTO user_liked_book (user_id, book_id) VALUES (?, ?); `,
+          [id, bookId]
+        );
+      } else {
+        await pool.query<BookRow[]>(
+          `DELETE FROM user_liked_book WHERE user_id = ? AND book_id = ?`,
+          [id, bookId]
+        );
+      }
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  }
+
+  async updateUserBookSeen(id: string, bookId: string, bookSeen: boolean) {
+    try {
+      if (bookSeen) {
+        await pool.query<BookRow[]>(
+          `INSERT INTO user_seen_book (user_id, book_id) VALUES (?, ?); `,
+          [id, bookId]
+        );
+      } else {
+        await pool.query<BookRow[]>(
+          `DELETE FROM user_seen_book WHERE user_id = ? AND book_id = ?`,
+          [id, bookId]
+        );
+      }
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
   }
 }
 async function verfiyPassword(user_password: string, password: string) {

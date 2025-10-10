@@ -5,14 +5,13 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import type { UserInfo } from "~/lib/types";
-import { getUserInfo } from "./profileHelper";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import { useAppSelector } from "~/store/hooks";
+import { useAppDispatch, useAppSelector } from "~/store/hooks";
 import type { User } from "server/types/types";
+import { logoutUser } from "~/store/authActions";
 
 export default function ProfileCard() {
   const user = useAppSelector((state) => state.user);
@@ -22,9 +21,15 @@ export default function ProfileCard() {
     email: "tempgmail.com",
     user_password: "temp",
   });
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
     user && setUserinfo(user);
   }, []);
+
+  const onLogout = () => {
+    dispatch(logoutUser());
+  };
   return (
     <Card className="w-full max-w-sm bg-slate-50">
       <div className="flex flex-row justify-between pr-4">
@@ -33,8 +38,10 @@ export default function ProfileCard() {
             <CardTitle className="text-2xl">Profile</CardTitle>
           </CardHeader>
           <CardContent>
-            <h1 className="text-md text-gray-600">Name:{userinfo.user_name}</h1>
-            <h1 className="text-md text-gray-600">Email:{userinfo.email}</h1>
+            <h1 className="text-md text-gray-600">
+              Name: {userinfo.user_name}
+            </h1>
+            <h1 className="text-md text-gray-600">Email: {userinfo.email}</h1>
           </CardContent>
         </div>
         <Avatar className="w-16 h-16">
@@ -45,7 +52,7 @@ export default function ProfileCard() {
       </div>
       <CardFooter>
         <Link to="/">
-          <Button>Log Out</Button>
+          <Button onClick={onLogout}>Log Out</Button>
         </Link>
       </CardFooter>
     </Card>

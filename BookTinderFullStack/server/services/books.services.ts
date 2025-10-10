@@ -19,4 +19,12 @@ export class BooksService {
     const [rows] = await pool.query<BookRow[]>(`SELECT * FROM books`);
     return rows;
   }
+
+  async getBookByTitle(title: string) {
+    const [rows] = await pool.query<BookRow[]>(
+      `SELECT * FROM books WHERE title = ?`,
+      [title]
+    );
+    return rows;
+  }
 }

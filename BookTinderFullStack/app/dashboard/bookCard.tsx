@@ -14,6 +14,8 @@ export default function BookCard({
   handleLiked,
   handleDisliked,
 }: BookCardProps) {
+  const genres = JSON.parse(bookInfo.genres);
+
   return (
     <Card className="max-w-4xl p-8 rounded-2xl shadow-md">
       <CardContent className="flex gap-6 p-2">
@@ -33,11 +35,19 @@ export default function BookCard({
             </h1>
 
             <h2 className="text-xl text-gray-600">{bookInfo.author}</h2>
-            <Badge className="my-2 bg-gray-200" variant={"secondary"}>
-              {bookInfo.genre}
-            </Badge>
+            {genres.map((genre: string) => (
+              <Badge
+                key={genre}
+                className="mr-2 bg-gray-200"
+                variant={"secondary"}
+              >
+                {genre}
+              </Badge>
+            ))}
 
-            <p className="text-gray-700 line-clamp-4">{bookInfo.description}</p>
+            <p className="text-gray-700 line-clamp-4 my-4">
+              {bookInfo.description}
+            </p>
           </div>
           <CardAction className="flex w-full gap-8">
             <Button

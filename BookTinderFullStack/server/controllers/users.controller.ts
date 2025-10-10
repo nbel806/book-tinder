@@ -1,8 +1,10 @@
 import type { Request, Response } from "express";
 import { UsersService } from "../services/users.services";
 import { signJwt, verifyJwt } from "server/services/jwt";
+import { BooksService } from "server/services/books.services";
 
 const usersService = new UsersService();
+const booksService = new BooksService();
 
 export class UsersController {
   static async getUser(req: Request, res: Response) {
@@ -27,8 +29,18 @@ export class UsersController {
 
   static async getUserLiked(req: Request, res: Response) {
     const { id } = req.params;
-    const likedBooks = await usersService.getUserLiked(Number.parseInt(id));
-    res.status(200).json(likedBooks);
+    const listOfLikedBookIds = await usersService.getUserLiked(
+      Number.parseInt(id)
+    );
+
+    const likedBooks = await Promise.all(
+      listOfLikedBookIds.map(async (likedBook) => {
+        const book = await booksService.getBook(likedBook.book_id);
+        return book;
+      })
+    );
+
+    res.status(200).json(likedBooks.flat());
   }
 
   static async getUserSeen(req: Request, res: Response) {
@@ -67,7 +79,6 @@ export class UsersController {
   }
 
   static async verifyJWT(req: Request, res: Response) {
-    console.log(req.cookies);
     try {
       const token = req.cookies["jwt"];
       if (token && typeof token === "string") {
@@ -80,6 +91,32 @@ export class UsersController {
     } catch (error) {
       console.log(error);
       res.status(401).json({ message: "Invalid token" });
+    }
+  }
+
+  static async setUserUnlikedBook(req: Request, res: Response) {
+    const { id, bookId } = req.params;
+    if (await usersService.updateUserBookLiked(id, bookId, false)) {
+      res.status(200).json({ message: "Book unliked" });
+    } else {
+      res.status(404).json({ message: "Book not found" });
+    }
+  }
+  static async setUserLikedBook(req: Request, res: Response) {
+    const { id, bookId } = req.params;
+    if (await usersService.updateUserBookLiked(id, bookId, true)) {
+      res.status(200).json({ message: "Book liked" });
+    } else {
+      res.status(404).json({ message: "Book not found" });
+    }
+  }
+
+  static async setUserSeenBook(req: Request, res: Response) {
+    const { id, bookId } = req.params;
+    if (await usersService.updateUserBookSeen(id, bookId, true)) {
+      res.status(200).json({ message: "Book seen" });
+    } else {
+      res.status(404).json({ message: "Book not found" });
     }
   }
 }
