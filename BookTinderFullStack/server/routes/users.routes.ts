@@ -16,7 +16,9 @@ router.get("/:id", UsersController.getUser);
 router.get("/:id/liked", UsersController.getUserLiked);
 router.put("/:id/:bookId/liked", UsersController.setUserLikedBook);
 router.put("/:id/:bookId/unliked", UsersController.setUserUnlikedBook);
+
 router.get("/:id/seen", UsersController.getUserSeen);
+router.put("/:id/:bookId/seen", UsersController.setUserSeenBook);
 
 router.get(
   "/:id/recommended/:numberOfRecommendations",

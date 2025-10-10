@@ -110,4 +110,13 @@ export class UsersController {
       res.status(404).json({ message: "Book not found" });
     }
   }
+
+  static async setUserSeenBook(req: Request, res: Response) {
+    const { id, bookId } = req.params;
+    if (await usersService.updateUserBookSeen(id, bookId, true)) {
+      res.status(200).json({ message: "Book seen" });
+    } else {
+      res.status(404).json({ message: "Book not found" });
+    }
+  }
 }

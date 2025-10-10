@@ -8,9 +8,18 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import type { BookInfo } from "~/lib/types";
+import { useAppSelector } from "~/store/hooks";
+import { removeLikedBook } from "./likedBooksHelper";
 
 export default function SmallBookCard(bookInfo: BookInfo) {
+  const user = useAppSelector((state) => state.user);
   const genres = JSON.parse(bookInfo.genres);
+  function onUnlike() {
+    if (user) {
+      removeLikedBook(user.id, bookInfo.id);
+    }
+  }
+
   return (
     <Card className="w-full max-w-sm bg-slate-50 flex flex-row p-4">
       <div className="flex-shrink-0">
@@ -36,7 +45,10 @@ export default function SmallBookCard(bookInfo: BookInfo) {
           </CardDescription>
         </div>
         <CardAction className="w-full flex">
-          <Button className="shadow-sm bg-pink-100 hover:bg-pink-200 text-black transition-all ml-auto mr-0">
+          <Button
+            className="shadow-sm bg-pink-100 hover:bg-pink-200 text-black transition-all ml-auto mr-0"
+            onClick={onUnlike}
+          >
             <Trash />
           </Button>
         </CardAction>

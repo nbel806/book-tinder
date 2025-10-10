@@ -81,9 +81,13 @@ export class UsersService {
     const readBooks = await this.getUserSeen(id);
     const allBooks: BookRow[] = await bookService.getAllBooks();
 
+    console.log(allBooks);
+    console.log(readBooks);
     const notReadBooks = allBooks.filter((book) => {
       return !readBooks.some((readBook) => readBook.id === book.id);
     });
+
+    console.log(notReadBooks);
 
     return notReadBooks.slice(0, numberOfRecommendations);
   }
@@ -98,6 +102,26 @@ export class UsersService {
       } else {
         await pool.query<BookRow[]>(
           `DELETE FROM user_liked_book WHERE user_id = ? AND book_id = ?`,
+          [id, bookId]
+        );
+      }
+      return true;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  }
+
+  async updateUserBookSeen(id: string, bookId: string, bookSeen: boolean) {
+    try {
+      if (bookSeen) {
+        await pool.query<BookRow[]>(
+          `INSERT INTO user_seen_book (user_id, book_id) VALUES (?, ?); `,
+          [id, bookId]
+        );
+      } else {
+        await pool.query<BookRow[]>(
+          `DELETE FROM user_seen_book WHERE user_id = ? AND book_id = ?`,
           [id, bookId]
         );
       }

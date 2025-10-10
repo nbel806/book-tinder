@@ -15,9 +15,9 @@ export async function loadLikedBooks(id: number) {
 export async function addLikedBook(id: number, bookId: number) {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/user/${id}/${bookId}/liked`,
+      `http://localhost:3000/api/users/${id}/${bookId}/liked`,
       {
-        method: "GET",
+        method: "PUT",
       }
     );
     return response.json();
@@ -29,9 +29,9 @@ export async function addLikedBook(id: number, bookId: number) {
 export async function removeLikedBook(id: number, bookId: number) {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/user/${id}/${bookId}/unliked`,
+      `http://localhost:3000/api/users/${id}/${bookId}/unliked`,
       {
-        method: "GET",
+        method: "PUT",
       }
     );
     return response.json();

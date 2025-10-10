@@ -7,15 +7,20 @@ import { type CarouselApi } from "~/components/ui/carousel";
 import BookCard from "./bookCard";
 import { useEffect, useState, useCallback, useRef } from "react";
 import type { BookInfo } from "~/lib/types";
-import { loadBooks, updateDisliked, updateLiked } from "./dashboardHelper";
+import { loadUserRecommendedBooks, updateSeen } from "./dashboardHelper";
+import { addLikedBook } from "~/books/likedBooksHelper";
+import { useAppSelector } from "~/store/hooks";
 
 export default function DashboardCarousel() {
   const [books, setBooks] = useState<BookInfo[]>([]);
   const [api, setApi] = useState<CarouselApi>();
+  const user = useAppSelector((state) => state.user);
   const isLoadingRef = useRef(false);
 
   useEffect(() => {
-    setBooks(loadBooks());
+    loadUserRecommendedBooks(user!.id, 10).then((result) => {
+      setBooks(result);
+    });
   }, []);
 
   const loadMore = useCallback(() => {
@@ -23,9 +28,11 @@ export default function DashboardCarousel() {
     isLoadingRef.current = true;
 
     setBooks((prev) => {
-      const more = loadBooks();
+      loadUserRecommendedBooks(user!.id, 10).then((result) => {
+        return result.length ? [...prev, ...result] : prev;
+      });
       isLoadingRef.current = false;
-      return more.length ? [...prev, ...more] : prev;
+      return prev;
     });
   }, []);
 
@@ -46,15 +53,20 @@ export default function DashboardCarousel() {
 
   const handleLiked = () => {
     const index = api?.selectedScrollSnap();
-    updateLiked(books[index!].id);
+    if (user) {
+      addLikedBook(user.id, books[index!].id);
+    }
     handleNext();
   };
   const handleDisliked = () => {
-    const index = api?.selectedScrollSnap();
-    updateDisliked(books[index!].id);
     handleNext();
   };
   const handleNext = () => {
+    const index = api?.selectedScrollSnap();
+    if (user) {
+      updateSeen(user.id, books[index!].id);
+    }
+
     api?.scrollNext();
   };
 
