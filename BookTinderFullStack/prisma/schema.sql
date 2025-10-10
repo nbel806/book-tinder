@@ -30,3 +30,6 @@ PRIMARY KEY(user_id, book_id)
 SELECT * FROM users;
 
 INSERT INTO users (user_name, email, user_password) VALUES ("Nathan", "nathan@gmail.com","password"),("Jodie Batt", "jodie@gmail.com", "password");
+
+INSERT INTO user_liked_book (user_id, book_id) VALUES (6, 76),(6, 72),(6, 71),(6, 63);
+INSERT INTO user_seen_book (user_id, book_id) VALUES (6, 62),(6, 61),(6, 70);

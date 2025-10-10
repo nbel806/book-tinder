@@ -10,6 +10,7 @@ import {
 import type { BookInfo } from "~/lib/types";
 
 export default function SmallBookCard(bookInfo: BookInfo) {
+  const genres = JSON.parse(bookInfo.genres);
   return (
     <Card className="w-full max-w-sm bg-slate-50 flex flex-row p-4">
       <div className="flex-shrink-0">
@@ -24,12 +25,14 @@ export default function SmallBookCard(bookInfo: BookInfo) {
           <CardTitle>{bookInfo.title}</CardTitle>
           <CardDescription>{bookInfo.author}</CardDescription>
           <CardDescription>
-            <Badge
-              className="mt-2 border-gray-200 bg-slate-50"
-              variant={"secondary"}
-            >
-              {bookInfo.genre}
-            </Badge>
+            {genres.map((genre: string) => (
+              <Badge
+                className="mt-2 border-gray-200 bg-slate-50"
+                variant={"secondary"}
+              >
+                {genre}
+              </Badge>
+            ))}
           </CardDescription>
         </div>
         <CardAction className="w-full flex">

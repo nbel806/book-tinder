@@ -3,6 +3,8 @@ import type { Route } from "./+types/home";
 import LikedBooksGrid from "~/books/likedBooksGrid";
 import { useAppSelector } from "~/store/hooks";
 import { redirect } from "react-router";
+import { useEffect, useState } from "react";
+import type { BookInfo } from "~/lib/types";
 
 export function meta({}: Route.MetaArgs) {
   return [

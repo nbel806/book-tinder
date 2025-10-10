@@ -87,6 +87,26 @@ export class UsersService {
 
     return notReadBooks.slice(0, numberOfRecommendations);
   }
+
+  async updateUserBookLiked(id: string, bookId: string, bookLiked: boolean) {
+    try {
+      if (bookLiked) {
+        await pool.query<BookRow[]>(
+          `INSERT INTO user_liked_book (user_id, book_id) VALUES (?, ?); `,
+          [id, bookId]
+        );
+      } else {
+        await pool.query<BookRow[]>(
+          `DELETE FROM user_liked_book WHERE user_id = ? AND book_id = ?`,
+          [id, bookId]
+        );
+      }
+      return true;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  }
 }
 async function verfiyPassword(user_password: string, password: string) {
   const isMatch = await bcrypt.compare(password, user_password);
