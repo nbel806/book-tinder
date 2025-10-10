@@ -36,7 +36,8 @@ export default function SmallBookCard(bookInfo: BookInfo) {
           <CardDescription>
             {genres.map((genre: string) => (
               <Badge
-                className="mt-2 border-gray-200 bg-slate-50"
+                key={genre}
+                className="mt-1 border-gray-200 bg-slate-50 mr-1"
                 variant={"secondary"}
               >
                 {genre}

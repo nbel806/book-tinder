@@ -18,7 +18,7 @@ export default function DashboardCarousel() {
   const isLoadingRef = useRef(false);
 
   useEffect(() => {
-    loadUserRecommendedBooks(user!.id, 10).then((result) => {
+    loadUserRecommendedBooks(user!.id, 5).then((result) => {
       setBooks(result);
     });
   }, []);
@@ -28,7 +28,7 @@ export default function DashboardCarousel() {
     isLoadingRef.current = true;
 
     setBooks((prev) => {
-      loadUserRecommendedBooks(user!.id, 10).then((result) => {
+      loadUserRecommendedBooks(user!.id, 5).then((result) => {
         return result.length ? [...prev, ...result] : prev;
       });
       isLoadingRef.current = false;
@@ -65,6 +65,7 @@ export default function DashboardCarousel() {
     const index = api?.selectedScrollSnap();
     if (user) {
       updateSeen(user.id, books[index!].id);
+      console.log("user seen", user.id, books[index!].title);
     }
 
     api?.scrollNext();

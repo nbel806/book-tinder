@@ -39,3 +39,7 @@ export const loginUser = createAsyncThunk<
     return rejectWithValue(error.response.data.errors);
   }
 });
+
+export const logoutUser = createAsyncThunk("auth/logout", async () => {
+  return;
+});

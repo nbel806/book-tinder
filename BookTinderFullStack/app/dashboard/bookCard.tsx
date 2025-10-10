@@ -36,12 +36,18 @@ export default function BookCard({
 
             <h2 className="text-xl text-gray-600">{bookInfo.author}</h2>
             {genres.map((genre: string) => (
-              <Badge className="my-2 bg-gray-200" variant={"secondary"}>
+              <Badge
+                key={genre}
+                className="mr-2 bg-gray-200"
+                variant={"secondary"}
+              >
                 {genre}
               </Badge>
             ))}
 
-            <p className="text-gray-700 line-clamp-4">{bookInfo.description}</p>
+            <p className="text-gray-700 line-clamp-4 my-4">
+              {bookInfo.description}
+            </p>
           </div>
           <CardAction className="flex w-full gap-8">
             <Button

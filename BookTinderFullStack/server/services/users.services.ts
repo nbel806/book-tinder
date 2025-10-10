@@ -78,16 +78,12 @@ export class UsersService {
 
   async getUserRecommendation(id: number, numberOfRecommendations: number) {
     const bookService = new BooksService();
-    const readBooks = await this.getUserSeen(id);
+    const seenBooks = await this.getUserSeen(id);
     const allBooks: BookRow[] = await bookService.getAllBooks();
 
-    console.log(allBooks);
-    console.log(readBooks);
     const notReadBooks = allBooks.filter((book) => {
-      return !readBooks.some((readBook) => readBook.id === book.id);
+      return !seenBooks.some((seenBook) => seenBook.book_id === book.id);
     });
-
-    console.log(notReadBooks);
 
     return notReadBooks.slice(0, numberOfRecommendations);
   }
@@ -107,7 +103,7 @@ export class UsersService {
       }
       return true;
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return false;
     }
   }
@@ -127,7 +123,7 @@ export class UsersService {
       }
       return true;
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return false;
     }
   }

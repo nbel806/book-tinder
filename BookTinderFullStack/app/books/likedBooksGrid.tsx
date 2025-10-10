@@ -15,7 +15,6 @@ export default function LikedBooksGrid() {
 
   useEffect(() => {
     loadLikedBooks(user.id).then((result) => {
-      console.log(result);
       setBooks(result);
     });
   }, []);
