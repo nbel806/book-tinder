@@ -1,6 +1,5 @@
 import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import pool from "./database";
-import { BooksService } from "./books.services";
 import type { Book, User } from "server/types/types";
 import bcrypt from "bcryptjs";
 
@@ -76,16 +75,38 @@ export class UsersService {
     return rows;
   }
 
-  async getUserRecommendation(id: number, numberOfRecommendations: number) {
-    const bookService = new BooksService();
-    const seenBooks = await this.getUserSeen(id);
-    const allBooks: BookRow[] = await bookService.getAllBooks();
+  async getUserRecommendation(
+    userId: number,
+    numberOfRecommendations: number,
+    excludedIds: number[]
+  ) {
+    // Prepare placeholders for excludedIds
+    const excludedPlaceholders = excludedIds.map(() => "?").join(",");
 
-    const notReadBooks = allBooks.filter((book) => {
-      return !seenBooks.some((seenBook) => seenBook.book_id === book.id);
-    });
+    // SQL query
+    const sql = `
+    SELECT *
+    FROM books b
+    WHERE b.id NOT IN (
+      SELECT book_id
+      FROM user_seen_book
+      WHERE user_id = ?
+    )
+    ${excludedIds.length ? `AND b.id NOT IN (${excludedPlaceholders})` : ""}
+    LIMIT ?
+  `;
 
-    return notReadBooks.slice(0, numberOfRecommendations);
+    // Build query parameters: first userId, then excludedIds, then limit
+    const params: Array<number> = [
+      userId,
+      ...excludedIds,
+      numberOfRecommendations,
+    ];
+
+    // Execute query
+    const [recommendedBooks] = await pool.query<BookRow[]>(sql, params);
+
+    return recommendedBooks;
   }
 
   async updateUserBookLiked(id: string, bookId: string, bookLiked: boolean) {

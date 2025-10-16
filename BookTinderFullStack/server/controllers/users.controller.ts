@@ -63,9 +63,11 @@ export class UsersController {
 
   static async getUserRecommended(req: Request, res: Response) {
     const { id, numberOfRecommendations } = req.params;
+    const { excludedIds } = req.body;
     const recommendedBooks = await usersService.getUserRecommendation(
       Number.parseInt(id),
-      Number.parseInt(numberOfRecommendations)
+      Number.parseInt(numberOfRecommendations),
+      excludedIds
     );
     res.status(200).json(recommendedBooks);
   }
