@@ -6,12 +6,15 @@ user_password TEXT
 );
 
 CREATE TABLE books (
-id INT PRIMARY KEY AUTO_INCREMENT,
-title TEXT,
-author TEXT,
-genres TEXT,
+id INT AUTO_INCREMENT PRIMARY KEY,
+title VARCHAR(1000) NOT NULL,
+author JSON,
 description TEXT,
-image TEXT
+genres JSON,
+image VARCHAR(500),
+published_year INT,
+created_at DATETIME,
+last_modified DATETIME
 );
 
 CREATE TABLE user_liked_book (

@@ -19,13 +19,23 @@ export class UsersController {
 
   static async createUser(req: Request, res: Response) {
     const { name, email, password } = req.body;
-    const existingUser = await usersService.getUserByEmail(email);
-    if (existingUser && existingUser.length > 0) {
+    const data = await usersService.getUserByEmail(email);
+    console.log(data)
+    if () {//here if exits
+      console.log("user exists")
       return res.status(400).json({ message: "User already exists" });
     }
-    const user = await usersService.createUser(name, email, password);
-    res.status(201).json(user);
+    const user_id = await usersService.createUser(name, email, password);
+    const user = await usersService.loginUser(email, password);
+      if (user && user_id) {
+        const token = signJwt(email);
+        res.cookie("jwt", token, {
+          httpOnly: true,
+          maxAge: 1000 * 60 * 60 * 24,
+        });
+    return res.status(201).json(user);
   }
+}
 
   static async getUserLiked(req: Request, res: Response) {
     const { id } = req.params;
