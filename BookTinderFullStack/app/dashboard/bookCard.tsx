@@ -1,4 +1,3 @@
-import { Check, X } from "lucide-react";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { Card, CardAction, CardContent } from "~/components/ui/card";
@@ -14,12 +13,9 @@ export default function BookCard({
   handleLiked,
   handleDisliked,
 }: BookCardProps) {
-  const genres = JSON.parse(bookInfo.genres);
-
   return (
     <Card className="max-w-4xl p-8 rounded-2xl shadow-md">
       <CardContent className="flex gap-6 p-2">
-        {/* Book Cover */}
         <div className="flex-shrink-0">
           <img
             src={bookInfo.image || "~/../public/testCover.webp"}
@@ -27,7 +23,6 @@ export default function BookCard({
             className="w-50 object-cover rounded-lg shadow-sm"
           />
         </div>
-        {/* Book Details */}
         <div className="flex flex-col justify-between text-left">
           <div>
             <h1 className="text-3xl font-bold text-gray-800">
@@ -35,15 +30,16 @@ export default function BookCard({
             </h1>
 
             <h2 className="text-xl text-gray-600">{bookInfo.author}</h2>
-            {genres.map((genre: string) => (
-              <Badge
-                key={genre}
-                className="mr-2 bg-gray-200"
-                variant={"secondary"}
-              >
-                {genre}
-              </Badge>
-            ))}
+            {bookInfo.genres &&
+              bookInfo.genres.map((genre: string) => (
+                <Badge
+                  key={genre}
+                  className="mr-2 bg-gray-200"
+                  variant={"secondary"}
+                >
+                  {genre}
+                </Badge>
+              ))}
 
             <p className="text-gray-700 line-clamp-4 my-4">
               {bookInfo.description}
