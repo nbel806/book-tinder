@@ -13,7 +13,6 @@ import { removeLikedBook } from "./likedBooksHelper";
 
 export default function SmallBookCard(bookInfo: BookInfo) {
   const user = useAppSelector((state) => state.user);
-  const genres = JSON.parse(bookInfo.genres);
   function onUnlike() {
     if (user) {
       removeLikedBook(user.id, bookInfo.id);
@@ -34,7 +33,7 @@ export default function SmallBookCard(bookInfo: BookInfo) {
           <CardTitle>{bookInfo.title}</CardTitle>
           <CardDescription>{bookInfo.author}</CardDescription>
           <CardDescription>
-            {genres.map((genre: string) => (
+            {bookInfo.genres?.map((genre: string) => (
               <Badge
                 key={genre}
                 className="mt-1 border-gray-200 bg-slate-50 mr-1"
