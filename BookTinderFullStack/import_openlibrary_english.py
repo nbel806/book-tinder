@@ -43,8 +43,10 @@ with gzip.open("ol_dump_works_2025-09-30.txt.gz", "rt", encoding="utf-8") as f:
             if not title:
                 continue
 
-            # Authors → keys as JSON
-            authors_list = data.get("authors") or []
+            authors_list = data.get("authors", [])
+            if not authors_list:
+                continue
+
             author_keys = [a["author"]["key"] for a in authors_list if "author" in a]
             author = json.dumps(author_keys) if author_keys else None
 
@@ -57,13 +59,17 @@ with gzip.open("ol_dump_works_2025-09-30.txt.gz", "rt", encoding="utf-8") as f:
             else:
                 description = None
 
-            # Genres / subjects
+            # Subjects / genres
             subjects = data.get("subjects") or []
             genres = json.dumps(subjects) if subjects else None
 
             # Cover image
             covers = data.get("covers") or []
             image = f"https://covers.openlibrary.org/b/id/{covers[0]}-L.jpg" if covers else None
+
+            # --- Skip record if ANY key field missing or empty ---
+            if not (author and description and genres and image):
+                continue
 
             # Created & last_modified
             created_at = None
