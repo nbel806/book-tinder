@@ -16,7 +16,12 @@ export const registerUser = createAsyncThunk<
       },
       body: JSON.stringify({ name, email, password }),
     });
-    return response.json();
+    console.log(response)
+    if(response.ok){
+      return response.json();
+    } else {
+      return rejectWithValue("User already signed up");
+    }
   } catch (error: any) {
     return rejectWithValue(error.response.data.errors);
   }

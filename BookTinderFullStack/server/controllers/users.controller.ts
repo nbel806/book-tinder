@@ -19,23 +19,25 @@ export class UsersController {
 
   static async createUser(req: Request, res: Response) {
     const { name, email, password } = req.body;
-    const data = await usersService.getUserByEmail(email);
-    console.log(data)
-    if () {//here if exits
-      console.log("user exists")
-      return res.status(400).json({ message: "User already exists" });
-    }
-    const user_id = await usersService.createUser(name, email, password);
-    const user = await usersService.loginUser(email, password);
-      if (user && user_id) {
+    try {
+      const userTaken = await usersService.getUserByEmail(email);
+      if (userTaken && userTaken.id > 0) {
+        return res.status(400).json({ message: "User already exists" });
+      }
+      const user_id = await usersService.createUser(name, email, password);
+      const user = await usersService.loginUser(email, password);
+      if (user_id && user) {
         const token = signJwt(email);
         res.cookie("jwt", token, {
           httpOnly: true,
           maxAge: 1000 * 60 * 60 * 24,
         });
-    return res.status(201).json(user);
+        return res.status(201).json({ user });
+      }
+    } catch {
+      return res.status(400).json({ message: "Error Registering User" });
+    }
   }
-}
 
   static async getUserLiked(req: Request, res: Response) {
     const { id } = req.params;
