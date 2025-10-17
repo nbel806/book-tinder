@@ -9,7 +9,17 @@ interface BookRow extends RowDataPacket {
 export class BooksService {
   async getBook(id: number) {
     const [rows] = await pool.query<BookRow[]>(
-      `SELECT * FROM books WHERE id = ?`,
+      `SELECT 
+      b.id,
+      b.title,
+      a.name AS author,
+      b.description,
+      b.genres,
+      b.image
+    FROM books b
+    LEFT JOIN authors a
+      ON JSON_UNQUOTE(JSON_EXTRACT(b.author, '$[0]')) = a.author_key
+    WHERE b.id = ?;`,
       [id]
     );
     return rows;

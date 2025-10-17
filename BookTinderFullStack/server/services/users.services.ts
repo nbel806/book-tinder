@@ -85,8 +85,16 @@ export class UsersService {
 
     // SQL query
     const sql = `
-    SELECT *
+    SELECT 
+      b.id,
+      b.title,
+      a.name AS author,
+      b.description,
+      b.genres,
+      b.image
     FROM books b
+    LEFT JOIN authors a
+      ON JSON_UNQUOTE(JSON_EXTRACT(b.author, '$[0]')) = a.author_key
     WHERE b.id NOT IN (
       SELECT book_id
       FROM user_seen_book
@@ -94,7 +102,7 @@ export class UsersService {
     )
     ${excludedIds.length ? `AND b.id NOT IN (${excludedPlaceholders})` : ""}
     LIMIT ?
-  `;
+    `;
 
     // Build query parameters: first userId, then excludedIds, then limit
     const params: Array<number> = [

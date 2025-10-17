@@ -17,6 +17,15 @@ created_at DATETIME,
 last_modified DATETIME
 );
 
+CREATE TABLE authors (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    author_key VARCHAR(255) UNIQUE,
+    name VARCHAR(255),
+    birth_year INT,
+    death_year INT,
+    bio TEXT
+);
+
 CREATE TABLE user_liked_book (
 user_id INT NOT NULL,
 book_id INT NOT NULL,

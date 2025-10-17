@@ -12,9 +12,9 @@ conn = mysql.connector.connect(
     database="booktinder_app"
 )
 cursor = conn.cursor()
-START_FROM = 1000480 
+START_FROM = 0
 MAX_RECORDS = 2000000
-BATCH_SIZE = 10
+BATCH_SIZE = 1000
 count = 0
 inserted = 0
 
