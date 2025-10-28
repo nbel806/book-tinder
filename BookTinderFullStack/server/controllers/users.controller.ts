@@ -62,22 +62,49 @@ export class UsersController {
   }
 
   static async getUserRecommended(req: Request, res: Response) {
-    const { id, numberOfRecommendations } = req.params;
-    const { excludedIds } = req.body;
+    try {
+      const { id, numberOfRecommendations } = req.params;
+      const { excludedIds } = req.body;
 
-    // Validate that excludedIds is an array of numbers
-    if (
-      !Array.isArray(excludedIds) ||
-      !excludedIds.every((val) => typeof val === "number" && Number.isFinite(val))
-    ) {
-      return res.status(400).json({ message: "excludedIds must be an array of numbers" });
+      if (
+        !Array.isArray(excludedIds) ||
+        !excludedIds.every(
+          (val) => typeof val === "number" && Number.isFinite(val)
+        )
+      ) {
+        return res
+          .status(400)
+          .json({ message: "excludedIds must be an array of numbers" });
+      }
+
+      // Get recommended book IDs from microservice
+      const faissRecommendedIds = await usersService.getFaissRecommendations(
+        Number.parseInt(id),
+        Number.parseInt(numberOfRecommendations)
+      );
+
+      console.log("FAISS Recommended IDs:", faissRecommendedIds);
+
+      // Remove any excluded IDs
+      const filteredIds: number[] = faissRecommendedIds.filter(
+        (bid: number) => !excludedIds.includes(bid)
+      );
+
+      if (!filteredIds.length) return res.status(200).json([]);
+
+      // Fetch full book info from DB
+      const recommendedBooks = await Promise.all(
+        filteredIds.map(async (bookId) => {
+          const book = await booksService.getBook(bookId);
+          return book;
+        })
+      );
+
+      res.status(200).json(recommendedBooks);
+    } catch (err) {
+      console.error("Error in getUserRecommended:", err);
+      res.status(500).json({ message: "Internal server error" });
     }
-    const recommendedBooks = await usersService.getUserRecommendation(
-      Number.parseInt(id),
-      Number.parseInt(numberOfRecommendations),
-      excludedIds
-    );
-    res.status(200).json(recommendedBooks);
   }
 
   static async loginUser(req: Request, res: Response) {

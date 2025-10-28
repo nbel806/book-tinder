@@ -38,6 +38,12 @@ book_id INT NOT NULL,
 PRIMARY KEY(user_id, book_id)
 );
 
+CREATE TABLE book_embeddings (
+    book_id INT PRIMARY KEY,
+    embedding JSON,
+    FOREIGN KEY (book_id) REFERENCES books(id)
+);
+
 
 SELECT * FROM users;
 
