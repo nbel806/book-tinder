@@ -2,6 +2,7 @@ import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import pool from "./database";
 import type { Book, User } from "server/types/types";
 import bcrypt from "bcryptjs";
+import axios from "axios";
 
 interface UserRow extends RowDataPacket {
   user: User;
@@ -154,6 +155,18 @@ export class UsersService {
     } catch (err) {
       console.error(err);
       return false;
+    }
+  }
+
+  async getFaissRecommendations(userId: number, topK = 10) {
+    try {
+      const res = await axios.get(`http://0.0.0.0:8000/recommend/${userId}`, {
+        params: { top_k: topK },
+      });
+      return res.data.recommended_book_ids; // array of book IDs
+    } catch (err) {
+      console.error("Error fetching FAISS recommendations:", err);
+      return [];
     }
   }
 }
