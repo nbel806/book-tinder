@@ -6,9 +6,9 @@ from datetime import datetime
 
 # === MySQL connection ===
 conn = mysql.connector.connect(
-    host="booktinder-prod.c7amsyuueft7.ap-southeast-2.rds.amazonaws.com",
+    host="",
     user="admin",
-    password="wzxZEe27X9LUXMg22nBP",
+    password="",
     database="booktinder_app"
 )
 cursor = conn.cursor()

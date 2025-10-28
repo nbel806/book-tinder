@@ -8,9 +8,9 @@ BATCH_SIZE = 1000
 START = 11951000 
 
 DB_CONFIG = {
-    "host": "booktinder-prod.c7amsyuueft7.ap-southeast-2.rds.amazonaws.com",
+    "host": "",
     "user": "admin",
-    "password": "wzxZEe27X9LUXMg22nBP",
+    "password": "",
     "database": "booktinder_app"
 }
 
