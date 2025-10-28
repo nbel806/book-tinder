@@ -39,7 +39,7 @@ for i in range(0, len(books), BATCH_SIZE):
     texts = [f"{b['title']} - {b['description'] or ''}"[:8000] for b in batch]
 
     try:
-        response = openai.Embeddings.create(model=MODEL, input=texts)
+        response = openai.embeddings.create(model=MODEL, input=texts)
         embeddings = [d["embedding"] for d in response["data"]]
 
         for book, emb in zip(batch, embeddings):
