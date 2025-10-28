@@ -64,6 +64,14 @@ export class UsersController {
   static async getUserRecommended(req: Request, res: Response) {
     const { id, numberOfRecommendations } = req.params;
     const { excludedIds } = req.body;
+
+    // Validate that excludedIds is an array of numbers
+    if (
+      !Array.isArray(excludedIds) ||
+      !excludedIds.every((val) => typeof val === "number" && Number.isFinite(val))
+    ) {
+      return res.status(400).json({ message: "excludedIds must be an array of numbers" });
+    }
     const recommendedBooks = await usersService.getUserRecommendation(
       Number.parseInt(id),
       Number.parseInt(numberOfRecommendations),

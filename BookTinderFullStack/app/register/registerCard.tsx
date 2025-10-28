@@ -34,7 +34,7 @@ export function RegisterCard() {
       if (result.type === "auth/register/fulfilled") {
         navigate("/dashboard");
       } else {
-        alert("Registration failed, User may have and account");
+        alert("Registration failed, User may have an account");
       }
     });
   }
