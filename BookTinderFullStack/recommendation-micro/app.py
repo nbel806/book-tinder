@@ -92,8 +92,8 @@ def recommend(user_id: int, top_k: int = 5):
     liked_books = get_user_liked_books(user_id)
     seen_books = get_user_seen_books(user_id)  
 
-    if not liked_books or not seen_books:
-        print("No liked or seen books found.")
+    if not liked_books:
+        print("No liked books found.")
         return {"recommended_book_ids": get_random_recommendations(top_k)}
 
     # Only consider liked books that exist in FAISS
