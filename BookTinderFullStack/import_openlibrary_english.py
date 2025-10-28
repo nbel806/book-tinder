@@ -1,4 +1,3 @@
-import datetime
 import gzip
 import json
 import mysql.connector
