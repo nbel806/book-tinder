@@ -5,7 +5,7 @@ import mysql.connector
 import openai
 
 # ---- CONFIG ----
-key=""
+key = os.getenv("OPENAI_API_KEY", "")
 openai.api_key = key
 
 DB_CONFIG = {
