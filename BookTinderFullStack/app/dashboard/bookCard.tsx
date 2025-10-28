@@ -23,24 +23,25 @@ export default function BookCard({
             className="w-50 object-cover rounded-lg shadow-sm"
           />
         </div>
-        <div className="flex flex-col justify-between text-left">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-800">
+        <div className="flex flex-col justify-between text-left max-w-full">
+          <div className=" w-full">
+            <h1 className="text-3xl font-bold text-gray-800 max-w-full">
               {bookInfo.title}
             </h1>
 
             <h2 className="text-xl text-gray-600">{bookInfo.author}</h2>
-            {bookInfo.genres &&
-              bookInfo.genres.map((genre: string) => (
-                <Badge
-                  key={genre}
-                  className="mr-2 bg-gray-200"
-                  variant={"secondary"}
-                >
-                  {genre}
-                </Badge>
-              ))}
-
+            <div className="line-clamp-4 ">
+              {bookInfo.genres &&
+                bookInfo.genres.slice(0, 8).map((genre: string) => (
+                  <Badge
+                    key={genre}
+                    className="mr-2 bg-gray-200 max-w-auto"
+                    variant={"secondary"}
+                  >
+                    {genre}
+                  </Badge>
+                ))}
+            </div>
             <p className="text-gray-700 line-clamp-4 my-4">
               {bookInfo.description}
             </p>
