@@ -67,7 +67,7 @@ def get_random_recommendations(num_recs: int = 5):
         rand_id = random.randint(min_id, max_id)
         cursor.execute("SELECT id FROM books WHERE id >= %s LIMIT 1", (rand_id,))
         book = cursor.fetchone()
-        if book and book not in recommendations:
+        if book and rand_id not in recommendations:
             recommendations.append(rand_id)
         attempts += 1
 
