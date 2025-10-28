@@ -100,7 +100,7 @@ export class UsersController {
         })
       );
 
-      res.status(200).json(recommendedBooks.flat());
+      res.status(200).json(recommendedBooks);
     } catch (err) {
       console.error("Error in getUserRecommended:", err);
       res.status(500).json({ message: "Internal server error" });
