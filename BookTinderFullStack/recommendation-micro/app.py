@@ -111,7 +111,7 @@ def recommend(user_id: int, top_k: int = 5):
     # Search for similar books
     D, I = index.search(user_embedding, top_k * 2)
     recommended_ids = [
-        book_ids[i] for i in I[0] if book_ids[i] not in liked_books
+        book_ids[i] for i in I[0] if int(book_ids[i]) not in liked_books
     ][:top_k]
 
     return {"recommended_book_ids": recommended_ids}
