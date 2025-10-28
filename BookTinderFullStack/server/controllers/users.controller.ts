@@ -19,12 +19,24 @@ export class UsersController {
 
   static async createUser(req: Request, res: Response) {
     const { name, email, password } = req.body;
-    const existingUser = await usersService.getUserByEmail(email);
-    if (existingUser && existingUser.length > 0) {
-      return res.status(400).json({ message: "User already exists" });
+    try {
+      const userTaken = await usersService.getUserByEmail(email);
+      if (userTaken && userTaken.id > 0) {
+        return res.status(400).json({ message: "User already exists" });
+      }
+      const user_id = await usersService.createUser(name, email, password);
+      const user = await usersService.loginUser(email, password);
+      if (user_id && user) {
+        const token = signJwt(email);
+        res.cookie("jwt", token, {
+          httpOnly: true,
+          maxAge: 1000 * 60 * 60 * 24,
+        });
+        return res.status(201).json({ user });
+      }
+    } catch {
+      return res.status(400).json({ message: "Error Registering User" });
     }
-    const user = await usersService.createUser(name, email, password);
-    res.status(201).json(user);
   }
 
   static async getUserLiked(req: Request, res: Response) {
@@ -51,9 +63,19 @@ export class UsersController {
 
   static async getUserRecommended(req: Request, res: Response) {
     const { id, numberOfRecommendations } = req.params;
+    const { excludedIds } = req.body;
+
+    // Validate that excludedIds is an array of numbers
+    if (
+      !Array.isArray(excludedIds) ||
+      !excludedIds.every((val) => typeof val === "number" && Number.isFinite(val))
+    ) {
+      return res.status(400).json({ message: "excludedIds must be an array of numbers" });
+    }
     const recommendedBooks = await usersService.getUserRecommendation(
       Number.parseInt(id),
-      Number.parseInt(numberOfRecommendations)
+      Number.parseInt(numberOfRecommendations),
+      excludedIds
     );
     res.status(200).json(recommendedBooks);
   }

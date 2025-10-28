@@ -1,12 +1,17 @@
 export async function loadUserRecommendedBooks(
   userId: number,
-  numberOfRecommendations: number
+  numberOfRecommendations: number = 10,
+  excludedIds: number[] = []
 ) {
   try {
     const response = await fetch(
       `http://localhost:3000/api/users/${userId}/recommended/${numberOfRecommendations}`,
       {
-        method: "GET",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ excludedIds }),
       }
     );
     return response.json();

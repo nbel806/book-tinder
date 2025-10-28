@@ -2,9 +2,9 @@ export type Book = {
   id: number;
   title: string;
   author: string;
-  genres: string;
-  description: string;
-  image: string;
+  genres?: string;
+  description?: string;
+  image?: string;
 };
 
 export type User = {
